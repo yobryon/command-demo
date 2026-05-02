@@ -1,4 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
   <rect width="192" height="192" rx="32" fill="#18181b"/>
-  <text x="96" y="120" text-anchor="middle" fill="#fafafa" font-family="system-ui" font-size="96" font-weight="700">C</text>
+  <text x="96" y="128" text-anchor="middle" fill="#fafafa"
+        font-family="Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
+        font-size="120" font-weight="600" letter-spacing="-0.02em">M</text>
 </svg>
