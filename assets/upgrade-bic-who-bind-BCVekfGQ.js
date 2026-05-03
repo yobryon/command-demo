@@ -1,0 +1,5 @@
+function o(a){try{const e=JSON.parse(a);if(e&&typeof e=="object"&&!Array.isArray(e)&&typeof e.id=="string"&&typeof e.display=="string")return!1}catch{}return!0}async function c(a){const e={scanned:0,bound:0,skipped:0,failures:[]};let n;try{n=await a.db.query(`SELECT id, ball_in_court_who, ball_in_court_since, created_at
+       FROM tracks
+       WHERE ball_in_court_mine = FALSE
+         AND ball_in_court_who IS NOT NULL
+         AND ball_in_court_who <> ''`)}catch(r){return console.warn("[upgradeBicWhoBindIfNeeded] scan failed (non-fatal)",r instanceof Error?r.message:r),e}for(const r of n){if(e.scanned+=1,!o(r.ball_in_court_who)){e.skipped+=1;continue}const i=r.ball_in_court_who.trim();if(i===""){e.skipped+=1;continue}try{const t=await a.tagRepo.findOrCreate(i,"audience");await a.dispatcher.dispatch({type:"track:update",id:r.id,now:new Date().toISOString(),ballInCourt:{mine:!1,who:{id:t.id,display:t.display},since:r.ball_in_court_since??r.created_at}}),e.bound+=1}catch(t){e.failures.push({trackId:r.id,reason:t instanceof Error?t.message:String(t)})}}return e}export{c as upgradeBicWhoBindIfNeeded};
